@@ -1,0 +1,35 @@
+- name: Install Java and Tomcat
+  hosts: g1
+  become: yes
+  tasks:
+     - name: Update apt repo and cache
+       become: true
+       apt:
+         upgrade: yes
+         #update_cache: yes
+
+     - name: Install Java
+       apt:
+         name: openjdk-11-jdk
+         state: present
+
+     - name: Download Tomcat
+       get_url:
+         url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.71/bin/apache-tomcat-9.0.71.tar.gz
+         dest: /tmp/tomcat.tar.gz
+
+     - name: Extract Tomcat
+       unarchive:
+         remote_src: true
+         src: /tmp/tomcat.tar.gz
+         dest: /usr/local/
+
+     - name: Deploy the Java web application
+       copy:
+         src: /var/lib/jenkins/workspace/new_web_app/target/webapp-0.2.war
+         dest: /usr/local/apache-tomcat-9.0.71/webapps/
+
+     - name: Start Tomcat
+       command: /usr/local/apache-tomcat-9.0.71/bin/startup.sh
+       args:
+         creates: /usr/local/apache-tomcat-9.0.71/logs/catalina.out
