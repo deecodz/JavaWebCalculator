@@ -32,4 +32,8 @@
      - name: Start Tomcat
        command: /usr/local/apache-tomcat-9.0.71/bin/startup.sh
        args:
+<<<<<<< HEAD
          creates: /usr/local/apache-tomcat-9.0.71/logs/catalina.out
+=======
+         creates: /usr/local/apache-tomcat-9.0.71/logs/catalina.out
+>>>>>>> 159346eeb838ef6b91b8ebd1e3cec79c8535b164
